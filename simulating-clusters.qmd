@@ -1,0 +1,33 @@
+---
+title: "Simulating Clusters"
+subtitle: "MDS201-2023"
+author: "**Prof. Rey R. Cuenca**<br/>*Math-Stat Dept., MSU-IIT*"
+format: html
+#format:
+#  html:
+#    self-contained: true
+editor: visual
+toc: true
+---
+
+## Mixture of Bivariate Normals
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+set.seed(134)
+N <- 1e3
+MASS::mvrnorm(n = N, mu = c(1,3), Sigma = diag(c(0.1,0.1))) %>% 
+  as.data.frame() %>% 
+  mutate(Type = 1) %>% 
+  bind_rows({
+    MASS::mvrnorm(n = N, mu = c(4,2), Sigma = diag(c(0.1,0.1))) %>% 
+      as.data.frame() %>% 
+      mutate(Type = 2)
+  }) %>% 
+  ggplot(aes(x=V1,y=V2)) +
+    geom_point(aes(color=Type))
+  
+```
