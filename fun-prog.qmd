@@ -1,0 +1,70 @@
+---
+title: "MDS201: Programming Functions"
+author: "RRCuenca"
+format: html
+---
+
+## Normal Distribution Function
+
+$$
+f(x,\mu,\sigma) 
+=
+\frac{1}{\sqrt{2\pi}\sigma}
+e^{-\frac{1}{2}\left(\frac{x-\mu}{\sigma}\right)^2}
+$$
+Define $A$ and $B$ as
+$$
+\begin{aligned}
+  A &= \frac{1}{\sqrt{2\pi}\sigma} \\
+  B &= \frac{x-\mu}{\sigma}
+\end{aligned}
+$$
+so that
+$$
+f(x,\mu,\sigma)
+=
+Ae^{-\frac{1}{2}B^2}
+$$
+
+```{r}
+f <- function(x,mu,sig) {
+  A <- 1/(sqrt(2*pi)*sig)
+  B <- (x - mu)/sig
+  result <- A*exp(-0.5*B^2)
+  
+  result
+}
+```
+
+```{r}
+f(x = 5, mu = 4.5, sig = 1.5)
+```
+## Another Function to Code
+
+$$
+H(t)=\frac{1}{2}
+			+ 
+			\frac{1}{\pi}
+			\left[
+			\frac{1}{\sqrt{3}}\cdot
+			\frac{t}{
+				1 + \frac{t^{2}}{3}}
+				+\tan^{-1}\left(\frac{t}{\sqrt{3}}\right)\right]
+$$
+
+```{r}
+H <- function(t) {
+  0.5 + (1/pi)*(
+    (1/sqrt(3))*(t/(1 + ((t^2)/3)))
+    +
+    atan(t/sqrt(3))
+  )
+}
+```
+
+```{r}
+H(1.5)
+H(pi)
+H(sqrt(pi))
+```
+

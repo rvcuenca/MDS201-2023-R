@@ -18,7 +18,7 @@ library(tidyverse)
 
 ```{r}
 set.seed(134)
-N <- 1e3
+N <- 500
 MASS::mvrnorm(n = N, mu = c(1,3), Sigma = diag(c(0.1,0.1))) %>% 
   as.data.frame() %>% 
   mutate(Type = "A") %>% 
@@ -27,8 +27,48 @@ MASS::mvrnorm(n = N, mu = c(1,3), Sigma = diag(c(0.1,0.1))) %>%
       as.data.frame() %>% 
       mutate(Type = "B")
   }) %>% 
-  set_names(c(paste0("X",1:2),"Type")) %>% 
+  set_names(c(paste0("X",1:2),"Type")) -> dt_cluster
+
+dt_cluster %>% 
   ggplot(aes(x=X1,y=X2)) +
     geom_point(aes(color=Type))
   
 ```
+
+```{r}
+first_four <- dt_cluster %>% 
+  group_by(Type) %>% 
+  group_modify(~head(.x,2)) %>% 
+  ungroup
+
+first_four %>% 
+  mutate(across(is.double, ~round(.x,2))) 
+```
+
+```{r}
+first_four %>% 
+  ggplot(aes(X1,X2)) +
+    geom_point(aes(color=Type))
+```
+
+```{r}
+first_four %>% 
+  select(-Type) %>% 
+  dist %>% 
+  as.matrix %>% 
+  `dimnames<-`(list(paste0("O_",1:4),paste0("O_",1:4))) 
+```
+
+## Low-Birth-Weight Data Set
+
+Source: <https://github.com/saima8/Low-Birth-Weight-Prediction>
+
+```{r}
+read.csv("Saima Khan - Total_data.csv") %>% 
+  ggplot(aes(x=childwt)) +
+  geom_histogram(binwidth = 0.15)
+```
+
+## Human Weight Height Data Set
+
+Source: <https://gist.github.com/nstokoe/7d4717e96c21b8ad04ec91f361b000cb>

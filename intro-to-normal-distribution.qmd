@@ -1,0 +1,97 @@
+---
+title: "Introduction to Normal Distribution"
+subtitle: "MDS201-2023"
+author: "**Prof. Rey R. Cuenca**<br/>*Math-Stat Dept., MSU-IIT*"
+format: html
+#format:
+#  html:
+#    self-contained: true
+editor: visual
+toc: true
+---
+
+```{r}
+#| message: true
+#| warning: false
+
+library(tidyverse)
+
+```
+
+## Naturally-Occurring Bell-Shape Distributions
+
+### Low-Birth-Weight Data Set
+
+Source: <https://github.com/saima8/Low-Birth-Weight-Prediction>
+
+```{r}
+read.csv("datasets/Saima Khan - Total_data.csv") %>% 
+  ggplot(aes(x=childwt)) +
+  geom_histogram(binwidth = 0.2)
+```
+
+### Human Weight and Height Data Set
+
+Source: <https://gist.github.com/nstokoe/7d4717e96c21b8ad04ec91f361b000cb>
+
+```{r}
+read.csv("datasets/weight-height.csv") %>% 
+  ggplot(aes(x=Height)) +
+  geom_histogram(binwidth = 0.1) +
+  facet_wrap(vars(Gender))
+```
+
+```{r}
+read.csv("datasets/weight-height.csv") %>% 
+  ggplot(aes(x=Weight)) +
+  geom_histogram(binwidth = 0.4) +
+  facet_wrap(vars(Gender))
+```
+
+### IQ Data Set
+
+Source: <https://www.kaggle.com/datasets/joebeachcapital/gpa-and-iq>
+
+```{r}
+read.csv("datasets/gpa_iq.csv") %>% 
+  mutate(gender = factor(gender, levels = 1:2, labels = c("Male","Female"))) %>% 
+  ggplot(aes(x = iq)) + 
+  geom_histogram(binwidth = 6)
+```
+
+Source: <https://www.nature.com/articles/s41597-021-00938-3>
+
+```{r}
+read.csv("datasets/cft_full.csv") %>% 
+  "["(ncol(.)) %>% 
+  ggplot(aes(x=cft_sum_full)) + 
+  geom_histogram(binwidth = 1)
+```
+
+## Generating Normal Random Variates
+
+Suppose we want to generate $X_1,X_2,\ldots,X_n\sim N(\mu,\sigma^2)$:
+
+```{r}
+set.seed(123)
+N <- 1e5
+rnorm(n = N, mean = 5, sd = 4) %>%  # N = 100, mu = 5, sigma^2 = (4)^2
+  # cbind(.)
+  data.frame(x_values = .) %>% 
+  ggplot(aes(x = x_values)) +
+  geom_histogram(binwidth = 1) +
+  geom_vline(xintercept = 5, color = "red")
+```
+
+## Gaussian Noise $N(0,\sigma^2)$
+
+```{r}
+set.seed(123)
+N <- 1e5
+rnorm(n = N, mean = 0, sd = 1) %>%  # N = 100, mu = 5, sigma^2 = (4)^2
+  # cbind(.)
+  data.frame(x_values = .) %>% 
+  ggplot(aes(x = x_values)) +
+  geom_histogram(binwidth = 0.01) +
+  geom_vline(xintercept = 0, color = "red")
+```
